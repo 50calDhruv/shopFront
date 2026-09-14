@@ -127,6 +127,17 @@ with its own mock API and no shell checked out. It also keeps the coupling hones
 the shell normally provides has to be stubbed in `src/standalone.tsx`, so if that file starts
 growing, the remote has quietly become entangled with the host.
 
+### If a remote suddenly serves nothing
+
+`vite build --watch` **empties `dist` at the start of every rebuild**. Kill it at the wrong
+moment — Ctrl-C mid-rebuild, or a hard kill of the process group — and that remote is left
+with an empty `dist`, so `preview` serves 404s and the shell shows its error boundary for a
+remote that is not actually broken.
+
+It looks alarming and is not. Re-run `pnpm dev` (it rebuilds the remotes first) or
+`pnpm build`. Worth knowing before you spend an hour debugging federation that is working
+fine — which is exactly how this note came to be written.
+
 ### Seeing failure isolation work
 
 Two ways, and they prove different things:
