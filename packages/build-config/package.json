@@ -1,0 +1,13 @@
+{
+  "name": "@shop/build-config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./federation.d.mts",
+      "default": "./federation.mjs"
+    }
+  },
+  "types": "./federation.d.mts"
+}

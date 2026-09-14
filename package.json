@@ -7,11 +7,20 @@
     "node": ">=20.19"
   },
   "scripts": {
-    "dev:shell": "pnpm --filter @shop/shell dev",
-    "build": "pnpm --filter @shop/shell build",
+    "dev": "pnpm build:remotes && concurrently -k -n shell,catalog,cart,account -c blue,green,magenta,yellow \"pnpm -F @shop/shell dev\" \"pnpm -F @shop/catalog serve\" \"pnpm -F @shop/cart serve\" \"pnpm -F @shop/account serve\"",
+    "dev:shell": "pnpm -F @shop/shell dev",
+    "dev:catalog": "pnpm -F @shop/catalog dev",
+    "dev:cart": "pnpm -F @shop/cart dev",
+    "dev:account": "pnpm -F @shop/account dev",
+    "build:remotes": "pnpm -F @shop/catalog build && pnpm -F @shop/cart build && pnpm -F @shop/account build",
+    "build:shell": "pnpm -F @shop/shell build",
+    "build": "pnpm build:remotes && pnpm build:shell",
+    "preview": "concurrently -k -n shell,catalog,cart,account -c blue,green,magenta,yellow \"pnpm -F @shop/shell preview\" \"pnpm -F @shop/catalog preview\" \"pnpm -F @shop/cart preview\" \"pnpm -F @shop/account preview\"",
     "typecheck": "pnpm -r typecheck",
     "lint": "eslint .",
     "verify": "pnpm typecheck && pnpm lint && pnpm build",
+    "analyze": "node scripts/bundle-report.mjs",
+    "verify:federation": "node scripts/verify-federation.mjs",
     "postinstall": "node scripts/sync-msw-worker.mjs"
   },
   "devDependencies": {
@@ -22,6 +31,7 @@
     "eslint": "^10.10.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.12.0",
+    "playwright": "^1.63.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.70.0"
   }

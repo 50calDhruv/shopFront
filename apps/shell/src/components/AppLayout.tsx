@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { SiteHeader } from './SiteHeader';
+import { RemoteToolbar } from './RemoteToolbar';
 
 /**
  * The shell's chrome. Everything here stays on screen and fully usable no matter
@@ -28,7 +29,8 @@ export function AppLayout() {
       </main>
 
       <footer className="border-t border-ink-200 bg-ink-0">
-        <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-6 text-xs text-ink-500">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 text-xs text-ink-500">
+          <RemoteToolbar />
           <p>
             Shop-Front — a micro-frontend reference build. Module Federation,
             shared singletons, cross-remote events, failure isolation.

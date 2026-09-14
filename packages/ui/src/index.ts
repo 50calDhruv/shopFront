@@ -9,3 +9,5 @@ export type { CardProps } from './components/Card';
 
 export { cn } from './lib/cn';
 export type { ClassValue } from './lib/cn';
+
+export { formatDate, formatPrice } from './lib/format';

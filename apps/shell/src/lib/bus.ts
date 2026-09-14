@@ -8,4 +8,11 @@ import { createEventBus } from '@shop/ui/events';
  * this file — it lives in the shell, and a remote importing from the shell would
  * invert the dependency the architecture depends on.
  */
-export const bus = createEventBus({ debug: import.meta.env.DEV });
+export const bus = createEventBus({
+  debug: import.meta.env.DEV,
+
+  // Facts that a late-mounting remote must know immediately on subscribe.
+  // Commands are deliberately NOT replayed — replaying "cart:add" would re-add
+  // the product every time a remote mounted.
+  replay: ['cart:updated', 'auth:changed'],
+});

@@ -1,12 +1,35 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { EventBusProvider } from '@shop/ui/events';
 import { AppLayout } from './components/AppLayout';
+import { RemoteBoundary } from './components/RemoteBoundary';
 import { HomePage } from './routes/HomePage';
 import { NotFoundPage } from './routes/NotFoundPage';
-import { RemotePlaceholder } from './routes/RemotePlaceholder';
 import { AuthProvider } from './providers/AuthProvider';
 import { CartProvider } from './providers/CartProvider';
 import { bus } from './lib/bus';
+import { loadAccountApp } from './lib/dynamicRemotes';
+
+/**
+ * Remote loaders are defined at MODULE SCOPE, never inline in JSX.
+ *
+ * A loader created during render is a new function identity every time, which
+ * would make React.lazy treat each render as a fresh module and refetch the
+ * remote. Hoisting them also means the bundler can see the dynamic import and
+ * emit the right chunk boundary.
+ *
+ * These two are STATIC remotes: `catalog` and `cart` are declared in
+ * vite.config.ts, so this looks like an ordinary dynamic import and TypeScript
+ * resolves it through src/types/remotes.d.ts. Compare with the runtime-registered
+ * account remote in src/lib/dynamicRemotes.ts.
+ */
+const loadCatalog = () => import('catalog/App');
+const loadCart = () => import('cart/App');
+
+/**
+ * The dynamic one. Same <RemoteBoundary>, same Suspense, same error boundary —
+ * only the discovery mechanism differs. See src/lib/dynamicRemotes.ts.
+ */
+const loadAccount = () => loadAccountApp();
 
 /**
  * ROUTING DELEGATION (requirement #4)
@@ -29,45 +52,15 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       {
         path: 'catalog/*',
-        element: (
-          <RemotePlaceholder
-            name="catalog"
-            phase="Phase 2"
-            willOwn={[
-              'Product grid with search and category filtering',
-              'Product detail at /catalog/:productId',
-              'The "Add to cart" button that fires the cross-remote event',
-            ]}
-          />
-        ),
+        element: <RemoteBoundary name="catalog" loader={loadCatalog} />,
       },
       {
         path: 'cart/*',
-        element: (
-          <RemotePlaceholder
-            name="cart"
-            phase="Phase 3"
-            willOwn={[
-              'Line items and quantity controls',
-              'Fake checkout at /cart/checkout',
-              'Confirmation at /cart/checkout/success',
-            ]}
-          />
-        ),
+        element: <RemoteBoundary name="cart" loader={loadCart} />,
       },
       {
         path: 'account/*',
-        element: (
-          <RemotePlaceholder
-            name="account"
-            phase="Phase 4"
-            willOwn={[
-              'Profile summary',
-              'Order history at /account/orders',
-              'Order detail at /account/orders/:orderId',
-            ]}
-          />
-        ),
+        element: <RemoteBoundary name="account" loader={loadAccount} />,
       },
       { path: '*', element: <NotFoundPage /> },
     ],

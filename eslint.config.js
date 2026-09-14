@@ -40,8 +40,22 @@ export default tseslint.config(
     },
   },
   {
-    // Node-side tooling (vite configs, build scripts) sees node globals, not browser.
-    files: ['**/vite.config.ts', 'scripts/**/*.{js,mjs,ts}', 'eslint.config.js'],
+    // Node-side tooling: vite configs, build scripts, the shared federation config.
+    files: [
+      '**/vite.config.ts',
+      'scripts/**/*.{js,mjs,ts}',
+      'packages/build-config/**/*.mjs',
+      'eslint.config.js',
+    ],
     languageOptions: { globals: { ...globals.node } },
+  },
+  {
+    /**
+     * Playwright driver scripts are Node, but the callbacks passed to
+     * page.evaluate() are serialised and run INSIDE the browser, where
+     * `document` and `performance` are real. They need both global sets.
+     */
+    files: ['scripts/**/*.mjs'],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
   },
 );

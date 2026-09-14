@@ -166,6 +166,24 @@ export function CartProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'add', productId, qty });
   });
 
+  /**
+   * The cart remote sends COMMANDS; it never mutates this state directly and
+   * never imports this file. That keeps exactly one writer for cart state, so
+   * there is no ambiguity about who owns it when two remotes both want to change
+   * the cart.
+   */
+  useEventBusSubscription('cart:setQty', ({ productId, qty }) => {
+    dispatch({ type: 'setQty', productId, qty });
+  });
+
+  useEventBusSubscription('cart:remove', ({ productId }) => {
+    dispatch({ type: 'remove', productId });
+  });
+
+  useEventBusSubscription('cart:clear', () => {
+    dispatch({ type: 'clear' });
+  });
+
   // Resolve titles/prices for optimistically-added lines.
   useEffect(() => {
     const pending = state.lines.filter((l) => l.unitPriceCents === null);
@@ -227,8 +245,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [state.lines]);
 
   useEffect(() => {
-    bus.emit('cart:updated', { count, subtotal: subtotalCents });
-  }, [bus, count, subtotalCents]);
+    // Broadcast the authoritative state. `cart:updated` is a REPLAY channel, so
+    // the cart remote gets the current value the moment it subscribes, however
+    // late it lazy-loads.
+    bus.emit('cart:updated', {
+      count,
+      subtotal: subtotalCents,
+      lines: state.lines.map((line) => ({
+        productId: line.productId,
+        title: line.title,
+        unitPriceCents: line.unitPriceCents,
+        qty: line.qty,
+      })),
+    });
+  }, [bus, count, subtotalCents, state.lines]);
 
   const addItem = useCallback((productId: string, qty = 1) => {
     dispatch({ type: 'add', productId, qty });

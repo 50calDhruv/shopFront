@@ -1,0 +1,4 @@
+{
+  "_comment": "Read at runtime by the shell — see src/lib/dynamicRemotes.ts. Change the URL here and reload; no rebuild of the shell is required. In production each Vercel environment serves its own copy of this file.",
+  "account": "http://localhost:5003"
+}
