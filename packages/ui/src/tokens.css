@@ -1,0 +1,138 @@
+/**
+ * @shop/ui design tokens — the single source of truth for the design system.
+ *
+ * WHY THIS IS A CSS FILE AND NOT A JS PRESET
+ * ------------------------------------------
+ * Tailwind v4 removed JS `presets`. The v4 idiom is CSS-first: tokens are declared
+ * with `@theme` and shared by importing the stylesheet. Each app does:
+ *
+ *   @import "tailwindcss";
+ *   @import "@shop/ui/tokens.css";
+ *   @source "../../../packages/ui/src";   <- so utilities used INSIDE @shop/ui get generated
+ *
+ * The `@source` line matters: Tailwind only generates utilities for classes it can
+ * see. Without it, every component in this package renders unstyled in the apps.
+ */
+
+@theme {
+  /* ---- Brand ------------------------------------------------------------ */
+  --color-brand-50: oklch(0.977 0.013 258);
+  --color-brand-100: oklch(0.946 0.028 260);
+  --color-brand-200: oklch(0.897 0.052 261);
+  --color-brand-300: oklch(0.823 0.087 262);
+  --color-brand-400: oklch(0.716 0.132 263);
+  --color-brand-500: oklch(0.623 0.181 264);
+  --color-brand-600: oklch(0.545 0.212 264);
+  --color-brand-700: oklch(0.481 0.196 265);
+  --color-brand-800: oklch(0.414 0.162 266);
+  --color-brand-900: oklch(0.367 0.128 266);
+  --color-brand-950: oklch(0.256 0.084 268);
+
+  /* ---- Neutrals --------------------------------------------------------- */
+  --color-ink-0: oklch(1 0 0);
+  --color-ink-50: oklch(0.984 0.003 248);
+  --color-ink-100: oklch(0.968 0.006 247);
+  --color-ink-200: oklch(0.929 0.012 255);
+  --color-ink-300: oklch(0.869 0.019 252);
+  --color-ink-400: oklch(0.704 0.03 256);
+  --color-ink-500: oklch(0.554 0.037 257);
+  --color-ink-600: oklch(0.446 0.037 257);
+  --color-ink-700: oklch(0.372 0.036 259);
+  --color-ink-800: oklch(0.279 0.035 260);
+  --color-ink-900: oklch(0.208 0.03 264);
+  --color-ink-950: oklch(0.129 0.03 265);
+
+  /* ---- Semantic --------------------------------------------------------- */
+  --color-positive-500: oklch(0.596 0.145 163);
+  --color-positive-600: oklch(0.508 0.124 163);
+  --color-positive-50: oklch(0.966 0.03 163);
+  --color-caution-500: oklch(0.769 0.155 70);
+  --color-caution-600: oklch(0.666 0.142 68);
+  --color-caution-50: oklch(0.973 0.04 75);
+  --color-critical-500: oklch(0.637 0.208 25);
+  --color-critical-600: oklch(0.564 0.191 25);
+  --color-critical-50: oklch(0.969 0.025 22);
+
+  /* ---- Typography ------------------------------------------------------- */
+  --font-sans:
+    ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Size-specific tracking: display type tightens, small type opens up.
+     This is the `apple-design` optical-sizing rule expressed as tokens. */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.125rem;
+  --text-xs--letter-spacing: 0.01em;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.3125rem;
+  --text-sm--letter-spacing: 0.005em;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-base--letter-spacing: 0em;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.6875rem;
+  --text-lg--letter-spacing: -0.005em;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.85rem;
+  --text-xl--letter-spacing: -0.01em;
+  --text-2xl: 1.75rem;
+  --text-2xl--line-height: 2.1rem;
+  --text-2xl--letter-spacing: -0.018em;
+  --text-3xl: 2.25rem;
+  --text-3xl--line-height: 2.5rem;
+  --text-3xl--letter-spacing: -0.024em;
+  --text-4xl: 3rem;
+  --text-4xl--line-height: 3.2rem;
+  --text-4xl--letter-spacing: -0.03em;
+
+  /* ---- Radii ------------------------------------------------------------ */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.375rem;
+
+  /* ---- Elevation -------------------------------------------------------- */
+  --shadow-subtle: 0 1px 2px oklch(0.129 0.03 265 / 0.06);
+  --shadow-raised:
+    0 1px 2px oklch(0.129 0.03 265 / 0.06), 0 2px 8px oklch(0.129 0.03 265 / 0.06);
+  --shadow-overlay:
+    0 8px 24px oklch(0.129 0.03 265 / 0.12), 0 2px 6px oklch(0.129 0.03 265 / 0.08);
+
+  /* ---- Motion ----------------------------------------------------------- */
+  /* `apple-design` calls for springs over fixed-duration easing. CSS has no real
+     spring, but `linear()` samples one accurately, including the slight overshoot
+     that makes a transition read as physical rather than mechanical. */
+  --ease-spring: linear(
+    0, 0.006, 0.025 2.8%, 0.101 6.1%, 0.539 18.9%, 0.721 25.3%, 0.849 31.5%,
+    0.937 38.1%, 0.968 41.8%, 0.991 45.7%, 1.006 50.1%, 1.015 55%, 1.017 63.9%,
+    1.001 100%
+  );
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@layer base {
+  /* One global, consistent focus ring. Never remove the outline without a
+     replacement — `quality-bar.md` requires a visible focus state on everything
+     interactive. */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Respect the OS setting. Motion is an enhancement, never load-bearing. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

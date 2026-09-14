@@ -1,0 +1,14 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+allowBuilds:
+  esbuild: set this to true or false
+  msw: set this to true or false
+
+# pnpm 10+ blocks lifecycle scripts by default. These two genuinely need them:
+#   esbuild — installs its platform-native binary (Vite cannot run without it)
+#   msw     — nothing at install time, but keeps pnpm from warning on every run
+onlyBuiltDependencies:
+  - esbuild
+  - msw

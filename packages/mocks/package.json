@@ -1,0 +1,19 @@
+{
+  "name": "@shop/mocks",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./handlers": "./src/handlers.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "msw": "^2.15.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

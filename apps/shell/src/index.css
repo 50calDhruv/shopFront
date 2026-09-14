@@ -1,0 +1,20 @@
+@import 'tailwindcss';
+@import '@shop/ui/tokens.css';
+
+/* Tailwind only generates utilities for class names it can SEE. @shop/ui lives
+   outside this app's root, so without this line every shared component would
+   render completely unstyled. Each app needs its own copy of this directive. */
+@source '../../../packages/ui/src';
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ink-50);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // Hermetic: this package uses no ambient globals, so pull in no @types at
+    // all. Anything it needs, it imports explicitly.
+    "types": []
+  },
+  "include": ["src"]
+}

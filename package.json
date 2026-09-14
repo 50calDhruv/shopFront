@@ -1,0 +1,28 @@
+{
+  "name": "shop-front",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.13.1",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "dev:shell": "pnpm --filter @shop/shell dev",
+    "build": "pnpm --filter @shop/shell build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint .",
+    "verify": "pnpm typecheck && pnpm lint && pnpm build",
+    "postinstall": "node scripts/sync-msw-worker.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "concurrently": "^10.0.5",
+    "eslint": "^10.10.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.12.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.0"
+  }
+}
